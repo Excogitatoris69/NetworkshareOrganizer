@@ -1,0 +1,217 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ====================================================================== -->
+    <!-- Colors -->
+    <!-- FF3D7FB6 FF89B3D6   8e4284     -->
+    <SolidColorBrush x:Key="Color_101" Color="#FFF9D458"/>
+    <SolidColorBrush x:Key="Color_102" Color="#94e09b"/>
+    <SolidColorBrush x:Key="Color_103" Color="#FFD4EECB"/>
+    <SolidColorBrush x:Key="Color_104" Color="#FFECFBBA"/>
+    <SolidColorBrush x:Key="Color_105" Color="#FFCAE5FF"/>
+    <SolidColorBrush x:Key="Color_106" Color="#FFFBF9EC"/>
+    <SolidColorBrush x:Key="Color_Statusbar" Color="#FFCEE6F9"/>
+    <SolidColorBrush x:Key="Color_Menu" Color="#FFCEE6F9"/>
+
+    <!-- ====================================================================== -->
+    <!--  Color Gradiants -->
+    <!-- 
+    <LinearGradientBrush x:Key="HeaderBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF6B8E95" Offset="0"/>
+        <GradientStop Color="#FF14A7C1" Offset="1"/>
+        <GradientStop Color="#FF1E424E" Offset="0.509"/>
+        <GradientStop Color="#FF1D4855" Offset="0.542"/>
+        <GradientStop Color="#FF1D4855" Offset="0.542"/>
+        <GradientStop Color="#FF193A44" Offset="0.526"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="HeaderBorderBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF1D1D1D" Offset="0.614"/>
+        <GradientStop Color="#FF007F96" Offset="0.853"/>
+        <GradientStop Color="#FF0AEAFA" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="OlisHeaderBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFFF2807" Offset="0"/>
+        <GradientStop Color="#FF0778FF" Offset="0.5"/>
+        <GradientStop Color="#FF07FF34" Offset="0.9"/>
+    </LinearGradientBrush>
+    -->
+
+    <LinearGradientBrush x:Key="TableHeaderBrush1" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFCDB030" Offset="0"/>
+        <GradientStop Color="#FFF5DA63" Offset="0.3"/>
+        <GradientStop Color="#FFCDB030" Offset="0.9"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="TableHeaderBrush2" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFF9AD27" Offset="0"/>
+        <GradientStop Color="#FFFFD07D" Offset="0.3"/>
+        <GradientStop Color="#FFF9AD27" Offset="0.9"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="TableHeaderBrush3" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF397BB2" Offset="0"/>
+        <GradientStop Color="#FF75B7EE" Offset="0.3"/>
+        <GradientStop Color="#FF397BB2" Offset="0.9"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="TableHeaderBrush4" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FF3F803F" Offset="0"/>
+        <GradientStop Color="#FF61C965" Offset="0.3"/>
+        <GradientStop Color="#FF3F803F" Offset="0.9"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="AboutDialogBrush" StartPoint="0.6,0" EndPoint="0,1">
+        <!-- 
+        <GradientStop Color="#FF2790F9" Offset="0"/>
+        -->
+        <GradientStop Color="#FF1C83D8" Offset="0"/>
+        <GradientStop Color="#FFDEEFFF" Offset="0.7"/>
+    </LinearGradientBrush>
+
+    <!-- ====================================================================== -->
+    <!-- 
+    
+        <Setter Property="FontFamily" Value="Arial" />
+        <Setter Property="Margin" Value="0,5,0,0" />
+    -->
+    <Style TargetType="{x:Type CheckBox}">
+        <Setter Property="FontSize" Value="11" />
+    </Style>
+    <Style TargetType="{x:Type GroupBox}">
+        <Setter Property="FontSize" Value="11" />
+    </Style>
+    <Style TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="11" />
+    </Style>
+
+    <!-- 
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="31" />
+    </Style>
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="11" />
+    </Style>
+    -->
+
+    <!-- ====================================================================== -->
+    <!-- Datagrid  -->
+    <Style x:Key="GroupHeaderStyle" TargetType="{x:Type GroupItem}">
+        <Setter Property="Margin" Value="0,0,0,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GroupItem}">
+                    <Expander IsExpanded="True" Background="{StaticResource Color_102}" BorderBrush="Black" Foreground="Black" BorderThickness="0,0,0,1" >
+                        <Expander.Header>
+                            <DockPanel>
+                                <!-- Hier steht immer Path=Name. Der Inhalt in Name ist das, wonach gruppiert wird. -->
+                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Margin="10,0,10,0" Foreground="Black" />
+                                <TextBlock FontWeight="Normal" Text="{Binding Path=Name}" Margin="0,0,0,0"  Foreground="Black" />
+                            </DockPanel>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <ItemsPresenter/>
+                        </Expander.Content>
+                    </Expander>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    
+    <Style x:Key="HeaderStyle" TargetType="DataGridColumnHeader">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="BorderBrush" Value="LightGray" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Background" Value="{StaticResource TableHeaderBrush4}" />
+        <!-- 
+        <Setter Property="Background" Value="{StaticResource OlisHeaderBrush}" />
+        <Setter Property="Background" Value="{StaticResource HeaderBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource HeaderBorderBrush}" />
+        
+        -->
+    </Style>
+
+    <Style x:Key="DatagridCellStyle1" TargetType="DataGridCell">
+        <Setter Property="Height" Value="16" />
+                <Setter Property="BorderThickness" Value="0" />
+        <!-- 
+        <Setter Property="VerticalAlignment" Value="Top" />
+        
+        -->
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="Background" Value="{StaticResource Color_105}" />
+                
+            </Trigger>
+            <!--
+            
+            -->
+        </Style.Triggers>
+    </Style>
+
+    <!-- ====================================================================== -->
+    <!-- Combobox  -->
+    <Style x:Key="ComboBoxStyleDisabled" TargetType="{x:Type ComboBox}">
+        <!-- Entfernt das Grau beim disabled combobox-->
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Background" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ====================================================================== -->
+    <!--  -->
+    <Style x:Key="LabelStyleNetshareAbout" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontFamily" Value="Averia Serif BoldItalic" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    
+
+
+    <!-- ====================================================================== -->
+    <!-- Validation -->
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,2,40,2" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="true">
+                        <!-- 
+                        bad:
+                        ToolTip="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"
+                        good:
+                        ToolTip="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)/ErrorContent}"
+                        see:
+                        https://stackoverflow.com/questions/2260616/
+                        -->
+                        <Border Background="Red" DockPanel.Dock="right" Margin="2,0,0,0" Width="20" Height="20" CornerRadius="10"
+                            ToolTip="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)/ErrorContent}">
+                            <TextBlock Text="!" VerticalAlignment="center" HorizontalAlignment="center" FontWeight="Bold" Foreground="white"/>
+                        </Border>
+                        <AdornedElementPlaceholder Name="customAdorner" VerticalAlignment="Center" >
+                            <Border BorderBrush="Red" BorderThickness="1" />
+                        </AdornedElementPlaceholder>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+</ResourceDictionary>

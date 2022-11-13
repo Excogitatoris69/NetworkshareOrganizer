@@ -1,0 +1,343 @@
+﻿<Window x:Class="NetworkShareOrganizer.src.view.DataManagerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NetworkShareOrganizer.src.view"
+        xmlns:vm="clr-namespace:NetworkShareOrganizer.src.viewmodel"
+        xmlns:p="clr-namespace:NetworkShareOrganizer.Properties" 
+        mc:Ignorable="d"
+        Title="{x:Static p:Resource.L202_WINDOWTITLE_DATAMANAGER}" 
+        Height="300" Width="940"
+        >
+    <!-- 
+        ResizeMode="NoResize"
+    
+    -->
+    <Window.DataContext>
+        <vm:DataManagerWindowViewmodel />
+    </Window.DataContext>
+    <Grid>
+        <TabControl>
+            <TabItem Header="{x:Static p:Resource.L140_NETSHARES}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="230"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="33" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ToolBar Grid.Row="0" Grid.ColumnSpan="2" Height="32" >
+                        <Button x:Name="btnAddNetshares" Command="{Binding editNetshareViewSettings.CmdAddNetshareButton}"  >
+                            <Image Source="/Resources/Add_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnRemoveNetShares" Command="{Binding editNetshareViewSettings.CmdRemoveNetshareButton}"  >
+                            <Image Source="/Resources/Remove_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnEditNetshares" Command="{Binding editNetshareViewSettings.CmdEditNetshareButton}"  >
+                            <Image Source="/Resources/edit_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnCloneNetshares" Command="{Binding editNetshareViewSettings.CmdCloneNetshareButton}" >
+                            <Image Source="/Resources/clone_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnImportNetsharess" Command="{Binding editNetshareViewSettings.CmdImportNetshareButton}" >
+                            <Image Source="/Resources/import_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnExportNetshares" Command="{Binding editNetshareViewSettings.CmdExportNetshareButton}" >
+                            <Image Source="/Resources/export_32_32.png" />
+                        </Button>
+                    </ToolBar>
+
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="230"/>
+                            <ColumnDefinition  Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <ListView x:Name="lvNetshare" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                  IsEnabled="{Binding Path=editNetshareViewSettings.lvNetshareIsEnabled}"
+                              ItemsSource="{Binding Path=netshareList}" SelectionChanged="lvNetshare_SelectionChanged">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Title}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Grid Grid.Row="1" Grid.Column="2" Background="White">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="320" />
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Grid.Column="0" Height="22" Orientation="Horizontal" >
+                                <Label Content="{x:Static p:Resource.L113_TITLE}" Width="100" />
+                                <TextBox x:Name="tbNetshareTitle" Text="{Binding editNetshareViewSettings.dataTitle,
+                                        ValidatesOnNotifyDataErrors=True}" 
+                                        Width="210" IsReadOnly="{Binding Path=editNetshareViewSettings.txtBoxTitleIsReadonly}" 
+                                        LostFocus="tbNetshareTitle_LostFocus"
+                                        TextChanged="tbNetshareTitle_TextChanged"
+                                        />
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="2" Height="22" Orientation="Horizontal" >
+                                <Label Content="MAC" Width="80" />
+                                <TextBox x:Name="tbNetshareMac" Text="{Binding editNetshareViewSettings.dataMac}" Width="210" IsReadOnly="{Binding Path=editNetshareViewSettings.txtBoxMacIsReadonly}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Height="22" Orientation="Horizontal" >
+                                <Label Content="{x:Static p:Resource.L114_UNC}" Width="100" />
+                                <TextBox x:Name="tbNetshareUnc" Text="{Binding editNetshareViewSettings.dataUnc}" Width="210" IsReadOnly="{Binding Path=editNetshareViewSettings.txtBoxUncIsReadonly}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="2" Height="22" Orientation="Horizontal" >
+                                <Label Content="{x:Static p:Resource.L112_DRIVE}" Width="80" />
+                                <ComboBox x:Name="comboDriveletter" Style="{StaticResource ComboBoxStyleDisabled}" ItemsSource="{Binding driveletterList}" IsEditable="False" IsReadOnly="True" IsEnabled="{Binding Path=editNetshareViewSettings.comboDriveletterIsEnabled}"  SelectionChanged="comboDriveletter_SelectionChanged" Width="50" >
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Driveletter}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="0" Height="22" Orientation="Horizontal" >
+                                <Label Content="{x:Static p:Resource.L117_CREDENTIAL}" Width="100" />
+                                <ComboBox x:Name="comboCredential" Style="{StaticResource ComboBoxStyleDisabled}" ItemsSource="{Binding credentialList}" IsEditable="False" IsReadOnly="True" IsEnabled="{Binding Path=editNetshareViewSettings.comboCredentialIsEnabled}"  SelectionChanged="comboCredential_SelectionChanged" Width="210" >
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DisplayTitle}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="2" Height="22" Orientation="Horizontal" >
+                                <Label Content="{x:Static p:Resource.L115_GROUP}" Width="80" />
+                                <ComboBox x:Name="comboGroup" Style="{StaticResource ComboBoxStyleDisabled}" ItemsSource="{Binding groupList}" IsEditable="False" IsReadOnly="True" IsEnabled="{Binding Path=editNetshareViewSettings.comboGroupIsEnabled}"  SelectionChanged="comboGroup_SelectionChanged" Width="210" >
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Height="22" Orientation="Horizontal" >
+                                <Label Content="{x:Static p:Resource.L116_DESCRIPTION}" Width="100" />
+                                <TextBox x:Name="tbNetshareDescription" Text="{Binding editNetshareViewSettings.dataDescription}" Width="570" IsReadOnly="{Binding Path=editNetshareViewSettings.txtBoxDescriptionIsReadonly}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="0" Height="22" Grid.ColumnSpan="2" Margin="80,0,0,0" Orientation="Horizontal" >
+                                <Button Content="{Binding Path=editNetshareViewSettings.btnSaveText,FallbackValue=Save}"  Command="{Binding editNetshareViewSettings.CmdSaveNetshareButton}" Margin="0,0,0,0" MinWidth="50"/>
+                                <Button Content="{Binding Path=editNetshareViewSettings.btnCancelText,FallbackValue=Cancel}"  Command="{Binding editNetshareViewSettings.CmdCancelNetshareButton}" Margin="10,0,0,0" MinWidth="50" />
+                            </StackPanel>
+
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{x:Static p:Resource.L141_GROUPS}">
+                <Grid Background="white">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="230"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="33" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ToolBar Grid.Row="0" Grid.ColumnSpan="2" Height="32">
+                        <Button x:Name="btnAddGroup" Command="{Binding editGroupViewSettings.CmdAddGroupButton}" >
+                            <Image Source="/Resources/Add_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnRemoveGroup" Command="{Binding editGroupViewSettings.CmdRemoveGroupButton}" >
+                            <Image Source="/Resources/Remove_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnEditGroup" Command="{Binding editGroupViewSettings.CmdEditGroupButton}" >
+                            <Image Source="/Resources/edit_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnImportGroup" Command="{Binding editGroupViewSettings.CmdImportGroupButton}" >
+                            <Image Source="/Resources/import_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnExportGroup" Command="{Binding editGroupViewSettings.CmdExportGroupButton}" >
+                            <Image Source="/Resources/export_32_32.png" />
+                        </Button>
+                    </ToolBar>
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="230"/>
+                            <ColumnDefinition  Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <ListView x:Name="lvGroups" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                    IsEnabled="{Binding Path=editGroupViewSettings.lvGroupsIsEnabled}"
+                                    ItemsSource="{Binding Path=groupList}" SelectionChanged="lvGroups_SelectionChanged">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Grid Grid.Row="1" Grid.Column="2" Background="White">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="320" />
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition  Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Height="22">
+                                <Label Content="{x:Static p:Resource.L113_TITLE}" Width="100" />
+                                <TextBox x:Name="tbGroupTitle" Text="{Binding editGroupViewSettings.dataGroupname, Mode=TwoWay, 
+                                        ValidatesOnNotifyDataErrors=True}" Width="200" 
+                                        IsReadOnly="{Binding Path=editGroupViewSettings.txtBoxGroupnameIsReadonly}" 
+                                        LostFocus="tbGroupTitle_LostFocus"
+                                        TextChanged="tbGroupTitle_TextChanged"
+                                        />
+
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" >
+                                <Label Content="{x:Static p:Resource.L137_USEDIN}" Width="80" />
+                                <ListView Width="220" ItemsSource="{Binding Path=editGroupViewSettings.netshareList}" Margin="0,8,0,0" >
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <WrapPanel>
+                                                <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+                                                <TextBlock Text="   " />
+                                                <TextBlock Text="{Binding Unc}" />
+                                            </WrapPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="100,0,0,0" HorizontalAlignment="Left">
+                                <Button Content="{Binding Path=editGroupViewSettings.btnSaveText,FallbackValue=Save}"  Command="{Binding editGroupViewSettings.CmdSaveGroupButton}"  MinWidth="50" Height="20" Margin="0,0,10,0"/>
+                                <Button Content="{Binding Path=editGroupViewSettings.btnCancelText,FallbackValue=Cancel}"  Command="{Binding editGroupViewSettings.CmdCancelGroupButton}"  MinWidth="50" Height="20" Margin="0,0,10,0" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{x:Static p:Resource.L142_CREDENTIALS}">
+                <Grid Background="white">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="230"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="33" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!-- <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"> -->
+                    <ToolBar Grid.Row="0" Grid.ColumnSpan="2" Height="32" >
+                        <Button x:Name="btnAddCredentials" Command="{Binding editCredentialViewSettings.CmdAddCredentialButton}" >
+                            <Image Source="/Resources/Add_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnRemoveCredentials" Command="{Binding editCredentialViewSettings.CmdRemoveCredentialButton}" >
+                            <Image Source="/Resources/Remove_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnEditCredentials" Command="{Binding editCredentialViewSettings.CmdEditCredentialButton}" >
+                            <Image Source="/Resources/Edit_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnImportCredentials" Command="{Binding editCredentialViewSettings.CmdImportCredentialButton}" >
+                            <Image Source="/Resources/import_32_32.png" />
+                        </Button>
+                        <Button x:Name="btnExportCredentials" Command="{Binding editCredentialViewSettings.CmdExportCredentialButton}" >
+                            <Image Source="/Resources/export_32_32.png" />
+                        </Button>
+                    </ToolBar>
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="230"/>
+                            <ColumnDefinition  Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <ListView x:Name="lvCredentials" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" 
+                                  IsEnabled="{Binding Path=editCredentialViewSettings.lvCredentialsIsEnabled}"
+                                  ItemsSource="{Binding Path=credentialList}" SelectionChanged="lvCredentials_SelectionChanged" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Title}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Grid Grid.Column="1" Grid.Row="2"  >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="320" />
+                                <ColumnDefinition  Width="40" />
+                                <ColumnDefinition  Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Height="22">
+                                <Label Content="{x:Static p:Resource.L113_TITLE}" Width="100" />
+                                <TextBox x:Name="tbCredentialTitle" Text="{Binding editCredentialViewSettings.dataTitle,
+                                        ValidatesOnNotifyDataErrors=True}" Width="200" 
+                                         IsReadOnly="{Binding Path=editCredentialViewSettings.txtBoxTitleIsReadonly}" 
+                                         LostFocus="tbCredentialTitle_LostFocus"
+                                         TextChanged="tbCredentialTitle_TextChanged"
+                                         />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Height="25">
+                                <Label Content="{x:Static p:Resource.L138_LOGINUSER}" Width="100" />
+                                <TextBox x:Name="tbCredentialLoginUser" Text="{Binding editCredentialViewSettings.dataLoginUser}" Width="200" IsReadOnly="{Binding Path=editCredentialViewSettings.txtBoxLoginUserIsReadonly}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Height="25">
+                                <Label Content="{x:Static p:Resource.L139_DOMAIN}" Width="100" />
+                                <TextBox x:Name="tbCredentialDomain" Text="{Binding editCredentialViewSettings.dataDomain}" Width="200" IsReadOnly="{Binding Path=editCredentialViewSettings.txtBoxDomainIsReadonly}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Height="25">
+                                <Label Content="{x:Static p:Resource.L109_PASSWORD}" Width="100" />
+                                <!-- 
+                                <TextBox x:Name="tbPassword" Text="{Binding editCredentialViewSettings.dataPassword}" Width="200" IsReadOnly="{Binding Path=editCredentialViewSettings.txtBoxPasswordIsReadonly}" />
+                                -->
+                                <PasswordBox x:Name="passwordBox" GotFocus="passwordBox_GotFocus" Height="22" IsEnabled="{Binding Path=editCredentialViewSettings.txtBoxPasswordIsReadonly}" Password="" PasswordChanged="passwordBox_PasswordChanged" Width="20" />
+                                <TextBox x:Name="passwordClearText" IsEnabled="True" IsReadOnly="True" Text="abc" Width="20" Height="22" />
+                            </StackPanel>
+                            <ToggleButton x:Name="btnTogglePassword" Grid.Column="1" Grid.Row="3" Content="{Binding Path=editCredentialViewSettings.btnTogglePwText}" Click="ToggleButton_Click"  Margin="2,2,2,2" />
+                            <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Margin="100,0,0,0" HorizontalAlignment="Left">
+                                <Button Content="{Binding Path=editCredentialViewSettings.btnSaveText,FallbackValue=Save}" MinWidth="50" Height="20" Margin="0,0,10,0" Command="{Binding editCredentialViewSettings.CmdSaveCredentialButton}"  />
+                                <Button Content="{Binding Path=editCredentialViewSettings.btnCancelText,FallbackValue=Cancel}" MinWidth="50" Height="20" Margin="0,0,10,0" Command="{Binding editCredentialViewSettings.CmdCancelCredentialButton}"  />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" >
+                                <Label Content="{x:Static p:Resource.L137_USEDIN}" Width="80" />
+                                <ListView Width="230" ItemsSource="{Binding Path=editCredentialViewSettings.netshareList}" Margin="0,8,0,0">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <WrapPanel>
+                                                <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+                                                <TextBlock Text="   " />
+                                                <TextBlock Text="{Binding Unc}" />
+                                            </WrapPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+
+    </Grid>
+</Window>

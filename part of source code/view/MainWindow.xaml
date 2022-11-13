@@ -1,0 +1,228 @@
+﻿<Window x:Class="NetworkShareOrganizer.src.view.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NetworkShareOrganizer.src.view"
+        xmlns:vm="clr-namespace:NetworkShareOrganizer.src.viewmodel"
+        xmlns:p="clr-namespace:NetworkShareOrganizer.Properties" 
+        mc:Ignorable="d"
+        Title="{Binding Path=title}" 
+        Left="{Binding Source={x:Static p:Settings1.Default}, Path=S102_MainWinX, Mode=TwoWay, FallbackValue=100}"
+        Top="{Binding Source={x:Static p:Settings1.Default}, Path=S103_MainWinY, Mode=TwoWay, FallbackValue=100}"
+        Height="{Binding Source={x:Static p:Settings1.Default}, Path=S105_MainWinH, Mode=TwoWay, FallbackValue=500}" 
+        Width="{Binding Source={x:Static p:Settings1.Default}, Path=S104_MainWinW, Mode=TwoWay, FallbackValue=600}" 
+        Name="wnd"
+        >
+    <Window.DataContext>
+        <vm:MainWindowViewmodel />
+    </Window.DataContext>
+    <Window.Resources>
+        <!-- Die Resource kann auch zentral in eine Resourcndatei ausgelagert werden und damit ändert
+        sich auch die Sichtbarkeit und wo es verwendet werden kann - nur hier oder überall.
+        IsLiveGroupingRequested ist wichtig, damit Änderungen direkt sichtbar werden.
+        -->
+        <CollectionViewSource x:Key="TableNetshareCollectionViewSource" Source="{Binding netshareList}" IsLiveGroupingRequested="True">
+            <CollectionViewSource.GroupDescriptions >
+                <!-- Das Gruppierungsfeld kann hier statisch festgelegt werden oder im Codebehind.
+                <PropertyGroupDescription PropertyName="GroupName" />
+                -->
+
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+    <DockPanel>
+        <!--#region Menu -->
+        <Menu DockPanel.Dock="Top" Background="{StaticResource Color_Menu}" >
+            <MenuItem Header="{x:Static p:Resource.L124_FILE}">
+                <MenuItem Header="{x:Static p:Resource.L125_OPENDATABASE}" Command="{Binding CmdOpenDatabase}"  />
+                <MenuItem Header="{x:Static p:Resource.L128_SAVEDATABASEAS}" Command="{Binding CmdSaveAsDatabase}"  />
+                <MenuItem Header="{x:Static p:Resource.L129_CREATENEWDATABASE}" Command="{Binding CmdCreateDatabase}"  />
+                <Separator HorizontalAlignment="Left" Width="150"    />
+                <MenuItem Header="{x:Static p:Resource.L132_SETTINGS}" Command="{Binding CmdOpenSettingsDialog}"   />
+                <Separator HorizontalAlignment="Left" Width="150"  />
+                <MenuItem Header="{x:Static p:Resource.L123_EXIT}" Command="{Binding CmdExitApp}"  />
+            </MenuItem>
+            <MenuItem Header="{x:Static p:Resource.L126_DATA}">
+                <!-- 
+                    <MenuItem Header="Add new connection..." Command="{Binding CmdAddNewConnection}"/>
+                    -->
+                <MenuItem Header="{x:Static p:Resource.L130_EDITDATA}" Command="{Binding CmdEditData}"  />
+                <MenuItem Header="{x:Static p:Resource.L156_CHANGEMASTERPASSWORD}" Command="{Binding CmdChangeMasterpassword}"  />
+            </MenuItem>
+            <MenuItem Header="{x:Static p:Resource.L127_INFO}">
+                <MenuItem Header="{x:Static p:Resource.L131_ABOUT}" Command="{Binding CmdShowAbout}" />
+            </MenuItem>
+        </Menu>
+        <!--#endregion-->
+
+        <!--#region Statusleiste -->
+        <!-- {DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}} Color_Statusbar-->
+        <StackPanel DockPanel.Dock="Bottom" Background="{StaticResource Color_Statusbar}" Orientation="Horizontal" >
+            <Label Content="{x:Static p:Resource.L108_PATH}" />
+            <Label Content="{Binding databasePath}" />
+        </StackPanel>
+        <!--#endregion-->
+
+        <!--#region Filterbereich -->
+        <!-- 
+        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" MinWidth="150" Background="#FFE6E6E6">
+            <Expander >
+                <Expander.Header>
+                    <TextBlock Text="Filtern und Sortieren"></TextBlock>
+                </Expander.Header>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Verbindung 1"></TextBlock>
+
+                </StackPanel>
+            </Expander>
+            <Expander>
+                <Expander.Header>
+                    <TextBlock Text="Gruppieren"></TextBlock>
+                </Expander.Header>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Verbindung 1"></TextBlock>
+
+                </StackPanel>
+            </Expander>
+        </StackPanel>
+        -->
+        <!--#endregion-->
+
+
+        <!--#region Tabellenbereich -->
+        <DockPanel DockPanel.Dock="Right" >
+            
+            <ToolBar Height="35" DockPanel.Dock="Top"  Background="{StaticResource Color_Statusbar}"  >
+                <Button x:Name="connect" Command="{Binding CmdConnect}" Margin="0,0,0,2" >
+                    <Image Source="/Resources/Play_32_32.png"  />
+                </Button>
+                <Button x:Name="editconnect" Command="{Binding CmdEditConnect}" Margin="0,0,0,2" >
+                    <Image Source="/Resources/Play-Edit_32_32.png" />
+                </Button>
+                <Button x:Name="disconnect" Command="{Binding CmdDisConnect}" Margin="0,0,0,2" >
+                    <Image Source="/Resources/Stop_32_32.png" />
+                </Button>
+                <Button x:Name="ping" Command="{Binding CmdSendPing}" Margin="0,0,0,2" >
+                    <Image Source="/Resources/ping_32_32.png" />
+                </Button>
+                <Button x:Name="openFilemanager" Command="{Binding CmdOpenFileManager}" Margin="0,0,0,2" >
+                    <Image Source="/Resources/Folder_32_32.png" />
+                </Button>
+                
+                <Separator Margin="5,0,0,0" />
+                    <Label Content="{x:Static p:Resource.L119_GROUPING}" Margin="5,0,0,0" VerticalAlignment="Center" Focusable="False" />
+                <ComboBox x:Name="comboGroupingCategory" Width="120" Height="23" Margin="5,0,0,2" VerticalAlignment="Center" SelectedIndex="0" ItemsSource="{Binding groupingCategoryList}" SelectionChanged="comboGroupingCategory_SelectionChanged" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Title}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </ToolBar>
+          
+            <Grid DockPanel.Dock="Left">
+                <Grid.RowDefinitions >
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <DataGrid Grid.Row="0" x:Name="TableNetshare"  IsReadOnly="True" SelectionChanged="TableNetshare_SelectionChanged"
+                            ItemsSource="{Binding Source={StaticResource TableNetshareCollectionViewSource}}" 
+                            AutoGenerateColumns="False"
+                          RowHeaderWidth="0"
+                          ColumnHeaderStyle="{StaticResource HeaderStyle}"
+                          CellStyle="{StaticResource DatagridCellStyle1}"
+                          AlternatingRowBackground="{StaticResource Color_106}" Background="White"
+                          
+                          >
+
+                    <!-- 
+                            ItemSource kann auch direkt mit einer ObservableCollection vom Viewmodel
+                            oder auch mit einer statischen CollectionViewSource verbunden werden:
+                            ItemsSource="{Binding netshareList}"  
+                            ItemsSource="{Binding Source={StaticResource TableNetshareCollectionViewSource}}" 
+                            -->
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="{x:Static p:Resource.L110_CONNECT}" MinWidth="60"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S121_ColsizeConnect, Mode=TwoWay, FallbackValue=60}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Width="12" Height="12" Source="{Binding ConnectionStatusImagePath}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="{x:Static p:Resource.L111_HOSTSTATUS}" MinWidth="60" Width="{Binding Source={x:Static p:Settings1.Default}, Path=S122_ColsizeHoststatus, Mode=TwoWay, FallbackValue=60}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Width="12" Height="12" Source="{Binding RemoteTargetStatusImagePath}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <!--
+                        <DataGridTextColumn Header="{x:Static p:Resource.L112_DRIVE}" Binding="{Binding UsedDriveletter}" MinWidth="50" MaxWidth="70"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S123_ColsizeDrive, Mode=TwoWay, FallbackValue=50}"/>
+                        <DataGridTextColumn Header="{x:Static p:Resource.L113_TITLE}" Binding="{Binding Title}" MinWidth="50"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S124_ColsizeTitle, Mode=TwoWay, FallbackValue=50}" />
+                        <DataGridTextColumn Header="{x:Static p:Resource.L114_UNC}" Binding="{Binding Unc}" MinWidth="50"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S125_ColsizeUNC, Mode=TwoWay, FallbackValue=50}" />
+                        <DataGridTextColumn Header="{x:Static p:Resource.L115_GROUP}" Binding="{Binding GroupName}" MinWidth="50"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S126_ColsizeGroup, Mode=TwoWay, FallbackValue=50}"/>
+                        <DataGridTextColumn Header="{x:Static p:Resource.L116_DESCRIPTION}" Binding="{Binding Description}" MinWidth="50"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S129_ColsizeDescription, Mode=TwoWay, FallbackValue=50}" />
+                        <DataGridTextColumn Header="{x:Static p:Resource.L117_CREDENTIAL}" Binding="{Binding CredentialDisplayTitle}" MinWidth="50"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S127_ColsizeCredential, Mode=TwoWay, FallbackValue=50}" />
+                        <DataGridTextColumn Header="{x:Static p:Resource.L118_PREFDRIVE}" Binding="{Binding PreferedDriveletter}" MinWidth="50" Width="{Binding Source={x:Static p:Settings1.Default}, Path=S128_ColsizePrefDrive, Mode=TwoWay, FallbackValue=50}" />
+                        -->
+                        <DataGridTextColumn Header="{x:Static p:Resource.L112_DRIVE}" Binding="{Binding UsedDriveletter}" MinWidth="50" MaxWidth="70"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S123_ColsizeDrive, Mode=TwoWay, FallbackValue=50}"/>
+                        <DataGridTextColumn Header="{x:Static p:Resource.L113_TITLE}" Binding="{Binding Title}" MinWidth="50"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S124_ColsizeTitle, Mode=TwoWay, FallbackValue=50}" />
+                        <DataGridTextColumn Header="{x:Static p:Resource.L117_CREDENTIAL}" Binding="{Binding CredentialDisplayTitle}" MinWidth="50"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S127_ColsizeCredential, Mode=TwoWay, FallbackValue=50}" />
+                        <DataGridTextColumn Header="{x:Static p:Resource.L114_UNC}" Binding="{Binding Unc}" MinWidth="50"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S125_ColsizeUNC, Mode=TwoWay, FallbackValue=50}" />
+                        <DataGridTextColumn Header="{x:Static p:Resource.L116_DESCRIPTION}" Binding="{Binding Description}" MinWidth="50"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S129_ColsizeDescription, Mode=TwoWay, FallbackValue=50}" />
+                        <DataGridTextColumn Header="{x:Static p:Resource.L115_GROUP}" Binding="{Binding GroupName}" MinWidth="50"  Width="{Binding Source={x:Static p:Settings1.Default}, Path=S126_ColsizeGroup, Mode=TwoWay, FallbackValue=50}"/>
+                        <DataGridTextColumn Header="{x:Static p:Resource.L118_PREFDRIVE}" Binding="{Binding PreferedDriveletter}" MinWidth="50" Width="{Binding Source={x:Static p:Settings1.Default}, Path=S128_ColsizePrefDrive, Mode=TwoWay, FallbackValue=50}" />
+                    </DataGrid.Columns>
+                    <DataGrid.GroupStyle>
+                        <!-- Sehr wichtig, nur dann ist auch der Grouping-Mechanismus aktiv.-->
+                        <GroupStyle ContainerStyle="{StaticResource GroupHeaderStyle }" />
+                    </DataGrid.GroupStyle>
+
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem
+                                Header="{x:Static p:Resource.L165_OPENFILEMANAGER}" 
+                                Command="{Binding Path=CmdOpenFileManager}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}">
+                                <MenuItem.Icon>
+                                    <Image Source="/Resources/Folder_32_32.png" Width="20" Height="20" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem
+                                Header="{x:Static p:Resource.L164_WAKEONLAN}"
+                                Command="{Binding Path=CmdWakeOnLan}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}">
+                                <MenuItem.Icon>
+                                    <Image Source="/Resources/Glocke_32_32.png" Width="20" Height="20" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem
+                                Header="{x:Static p:Resource.L107_EDIT}"
+                                Command="{Binding Path=CmdEditNetshare}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}">
+                                <MenuItem.Icon>
+                                    <Image Source="/Resources/edit_32_32.png" Width="18" Height="18" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+
+
+                </DataGrid>
+                <!-- 
+                <GridSplitter Grid.Row="1"  Height="3"  HorizontalAlignment="Stretch" ResizeDirection="Rows" />
+                <ScrollViewer Grid.Row="2" >
+                    <TextBlock Text="Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo Hallo " TextWrapping="Wrap"/>
+                </ScrollViewer>
+                -->
+            </Grid>
+
+        </DockPanel>
+        <!--#endregion-->
+
+
+
+    </DockPanel>
+</Window>
