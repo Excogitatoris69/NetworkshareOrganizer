@@ -1,5 +1,6 @@
 # Networkshare Organizer
 
+![Overview](https://github.com/Excogitatoris69/NetworkshareOrganizer/blob/main/images/en/Collage_Hauptfenster_gruppiert_mit_Info.png)
 
 Why do you need the program?   
 To access a network share on a computer, you have to connect a network drive to it under Windows operating systems. This is usually done in two ways.
